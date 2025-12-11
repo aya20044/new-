@@ -1,27 +1,15 @@
--- الترمينال الاولي 
+
 source /opt/ros/jazzy/setup.bash
 source ~/robot_ws/install/setup.bash
 export OGRE_RTT_MODE=Copy
 export LIBGL_DRI3_DISABLE=1
 ros2 launch my_robot_pkg sim.launch.py
 
--- الترمينال التانية
+
 source /opt/ros/jazzy/setup.bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
-و حرك الروبوت قدمها عن طريق ال  i , j , s, m , x 
 
-بعد ما تورهولها 
-اقفل كل الترمينال المفتوحة عن طريق ctrl + C 
-و بعدين خش علي اللي بعد كدة 
-متفتحشى اكتر من تاسك مع بعض ل الجهاز يفرقع 
-
-التاسك التاني مش محتاج ترن حاجة انت بتعمل الماب و خلاص 
-ممكن توريها الفولدر اللي فية صورة الماب 
-
-التاسك التالت 
-
--- الترمينال الاولي 
 source /opt/ros/jazzy/setup.bash
 source ~/turtlebot3_ws/install/setup.bash
 export LIBGL_ALWAYS_SOFTWARE=1
@@ -30,7 +18,7 @@ export MESA_GLSL_VERSION_OVERRIDE=450
 export TURTLEBOT3_MODEL=waffle_pi
 ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py
 
--- الترمينال التانية
+
 source ~/turtlebot3_ws/install/setup.bash
 ros2 launch turtlebot3_navigation2 navigation2.launch.py use_sim_time:=True
 map:=$HOME/turtlebot3_maps/my_map.yaml
