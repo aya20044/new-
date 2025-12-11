@@ -27,3 +27,26 @@
     </range>
   </lidar>
 </sensor>
+<gazebo>
+  <sensor type="ray" name="lidar">
+    <pose>0 0 0.15 0 0 0</pose> <!-- موقعه فوق الروبوت -->
+    <ray>
+      <scan>
+        <horizontal>
+          <samples>720</samples>
+          <resolution>1</resolution>
+          <min_angle>-1.5708</min_angle>
+          <max_angle>1.5708</max_angle>
+        </horizontal>
+      </scan>
+      <range>
+        <min>0.1</min>
+        <max>10.0</max>
+      </range>
+    </ray>
+    <plugin name="gazebo_ros_laser" filename="libgazebo_ros_laser.so">
+      <topicName>/scan</topicName>
+      <frameName>lidar_link</frameName>
+    </plugin>
+  </sensor>
+</gazebo>
