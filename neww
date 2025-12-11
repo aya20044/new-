@@ -1,115 +1,36 @@
-<link name="laser_link">
-  <visual>
-    <geometry>
-      <cylinder radius="0.02" length="0.05"/>
-      <material><color rgba="0.8 0.8 0 1"/></material>
-    </visual>
-</link>
+-- الترمينال الاولي 
+source /opt/ros/jazzy/setup.bash
+source ~/robot_ws/install/setup.bash
+export OGRE_RTT_MODE=Copy
+export LIBGL_DRI3_DISABLE=1
+ros2 launch my_robot_pkg sim.launch.py
 
-<joint name="laser_joint" type="fixed">
-  <parent link="base_link"/>
-  <child link="laser_link"/>
-  <origin xyz="0 0 0.2" rpy="0 0 0"/>
-</joint>
+-- الترمينال التانية
+source /opt/ros/jazzy/setup.bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
-<sensor name="laser" type="lidar">
-  <pose>0 0 0.2 0 0 0</pose>
-  <lidar>
-    <horizontal>
-      <samples>360</samples>
-      <resolution>1</resolution>
-      <min_angle>-3.1415</min_angle>
-      <max_angle>3.1415</max_angle>
-    </horizontal>
-    <range>
-      <min>0.1</min>
-      <max>10</max>
-    </range>
-  </lidar>
-</sensor>
-<gazebo>
-  <sensor type="ray" name="lidar">
-    <pose>0 0 0.15 0 0 0</pose> <!-- موقعه فوق الروبوت -->
-    <ray>
-      <scan>
-        <horizontal>
-          <samples>720</samples>
-          <resolution>1</resolution>
-          <min_angle>-1.5708</min_angle>
-          <max_angle>1.5708</max_angle>
-        </horizontal>
-      </scan>
-      <range>
-        <min>0.1</min>
-        <max>10.0</max>
-      </range>
-    </ray>
-    <plugin name="gazebo_ros_laser" filename="libgazebo_ros_laser.so">
-      <topicName>/scan</topicName>
-      <frameName>lidar_link</frameName>
-    </plugin>
-  </sensor>
-</gazebo>
-import os
-from launch import LaunchDescription
-from launch.actions import ExecuteProcess
-from launch_ros.actions import Node
-from ament_index_python.packages import get_package_share_directory
+و حرك الروبوت قدمها عن طريق ال  i , j , s, m , x 
 
-def generate_launch_description():
-    # مسار باكتجك
-    pkg_share = get_package_share_directory('my_robot_pkg')
-    urdf_file = os.path.join(pkg_share, 'urdf', 'my_robot.urdf')
-    world_file = os.path.join(pkg_share, 'worlds', 'empty_world.sdf')
+بعد ما تورهولها 
+اقفل كل الترمينال المفتوحة عن طريق ctrl + C 
+و بعدين خش علي اللي بعد كدة 
+متفتحشى اكتر من تاسك مع بعض ل الجهاز يفرقع 
 
-    # قراءة ملف الروبوت
-    with open(urdf_file, 'r') as file:
-        robot_desc = file.read()
+التاسك التاني مش محتاج ترن حاجة انت بتعمل الماب و خلاص 
+ممكن توريها الفولدر اللي فية صورة الماب 
 
-    return LaunchDescription([
-        # تشغيل Gazebo
-        ExecuteProcess(
-            cmd=['gz', 'sim', '-r', world_file],
-            output='screen'
-        ),
+التاسك التالت 
 
-        # ناشر حالة الروبوت
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            parameters=[{
-                'robot_description': robot_desc,
-                'use_sim_time': True
-            }]
-        ),
+-- الترمينال الاولي 
+source /opt/ros/jazzy/setup.bash
+source ~/turtlebot3_ws/install/setup.bash
+export LIBGL_ALWAYS_SOFTWARE=1
+export MESA_GL_VERSION_OVERRIDE=4.5
+export MESA_GLSL_VERSION_OVERRIDE=450
+export TURTLEBOT3_MODEL=waffle_pi
+ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py
 
-        # اظهار الروبوت في المحاكاة
-        Node(
-            package='ros_gz_sim',
-            executable='create',
-            name='spawn_robot',
-            arguments=[
-                '-topic', '/robot_description',
-                '-name', 'my_robot',
-                '-z', '0.5'
-            ]
-        ),
-
-        # جسر للتحكم في الحركة
-        Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='cmd_vel_bridge',
-            arguments=['/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist']
-        ),
-
-        # جسر LiDAR من Gazebo إلى ROS2 (sensor_msgs/LaserScan)
-        Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='lidar_bridge',
-            arguments=['/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan']
-        ),
-    ])
-
+-- الترمينال التانية
+source ~/turtlebot3_ws/install/setup.bash
+ros2 launch turtlebot3_navigation2 navigation2.launch.py use_sim_time:=True
+map:=$HOME/turtlebot3_maps/my_map.yaml
