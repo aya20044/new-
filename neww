@@ -1,0 +1,29 @@
+<link name="laser_link">
+  <visual>
+    <geometry>
+      <cylinder radius="0.02" length="0.05"/>
+      <material><color rgba="0.8 0.8 0 1"/></material>
+    </visual>
+</link>
+
+<joint name="laser_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="laser_link"/>
+  <origin xyz="0 0 0.2" rpy="0 0 0"/>
+</joint>
+
+<sensor name="laser" type="lidar">
+  <pose>0 0 0.2 0 0 0</pose>
+  <lidar>
+    <horizontal>
+      <samples>360</samples>
+      <resolution>1</resolution>
+      <min_angle>-3.1415</min_angle>
+      <max_angle>3.1415</max_angle>
+    </horizontal>
+    <range>
+      <min>0.1</min>
+      <max>10</max>
+    </range>
+  </lidar>
+</sensor>
